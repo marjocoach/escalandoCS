@@ -129,10 +129,34 @@
     onScroll();
   }
 
+  function initPhaseTabs() {
+    var tabs = document.querySelectorAll("[data-phase-tab]");
+    var panels = document.querySelectorAll("[data-phase-panel]");
+    if (!tabs.length || !panels.length) return;
+
+    function activate(id) {
+      tabs.forEach(function (tab) {
+        tab.setAttribute("aria-selected", tab.getAttribute("data-phase-tab") === id ? "true" : "false");
+      });
+      panels.forEach(function (panel) {
+        panel.classList.toggle("is-active", panel.id === id);
+      });
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        activate(tab.getAttribute("data-phase-tab"));
+      });
+    });
+
+    activate(tabs[0].getAttribute("data-phase-tab"));
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     safe(initNavToggle, "initNavToggle");
     safe(initReveal, "initReveal");
     safe(initStatCounters, "initStatCounters");
     safe(initHeaderShadow, "initHeaderShadow");
+    safe(initPhaseTabs, "initPhaseTabs");
   });
 })();
