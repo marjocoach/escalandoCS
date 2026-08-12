@@ -135,8 +135,13 @@
     if (!tabs.length || !panels.length) return;
 
     function activate(id) {
-      tabs.forEach(function (tab) {
-        tab.setAttribute("aria-selected", tab.getAttribute("data-phase-tab") === id ? "true" : "false");
+      var activeIndex = -1;
+      tabs.forEach(function (tab, i) {
+        if (tab.getAttribute("data-phase-tab") === id) activeIndex = i;
+      });
+      tabs.forEach(function (tab, i) {
+        tab.setAttribute("aria-selected", i === activeIndex ? "true" : "false");
+        tab.classList.toggle("is-done", i <= activeIndex);
       });
       panels.forEach(function (panel) {
         panel.classList.toggle("is-active", panel.id === id);
